@@ -79,12 +79,12 @@ else if (cmd === 'update') {
     let name = process.argv[6];
 
     if (!age || !kind || !name) {
-      console.error(`Usage: ${node} ${file} ${cmd} AGE KIND NAME`);
+      console.error(`Usage: ${node} ${file} ${cmd} INDEX AGE KIND NAME`);
       process.exit(1);
     }
 
     pets[index] = {
-      age: age,
+      age: age*1,
       kind: kind,
       name:name,
     };
@@ -95,7 +95,7 @@ else if (cmd === 'update') {
       if (writeErr) {
         throw writeErr;
       }
-      console.log(pets);
+      console.log(pets[index]);
     });
   });
 } else if (cmd === 'destroy') {
@@ -109,8 +109,15 @@ else if (cmd === 'update') {
       process.exit(1);
     }
     else {
-      pets.splice(index,1);
-      console.log(pets);
+      let destroyed = pets.splice(index,1);
+      let petsJSON = JSON.stringify(pets);
+
+      fs.writeFile(petFile, petsJSON, function(writeErr) {
+        if (writeErr) {
+          throw writeErr;
+        }
+        console.log(destroyed[0]);
+      });
     }
   });
 }
