@@ -4,7 +4,6 @@
   "description": "A small server app to demonstrate CRUD over an HTTP API",
   "main": "restfulExpressServer.js",
   "scripts": {
-    "lint": "eslint",
     "start": "nodemon",
     "test": "mocha"
   },
@@ -31,7 +30,6 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "eslint": "^2.12.0",
     "mocha": "^3.0.2",
     "mock-fs": "^3.11.0",
     "supertest": "^2.0.0"
