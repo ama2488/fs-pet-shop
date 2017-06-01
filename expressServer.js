@@ -13,7 +13,7 @@ const petData = JSON.parse(data);
 app.disable('x-powered-by');
 
 app.route('/pets')
-.get(function (req, res) {
+.get((req, res) => {
   res.send(petData);
 })
 .post((req, res) => {
