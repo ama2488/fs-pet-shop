@@ -3,7 +3,7 @@
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
-var petsPath = path.join(__dirname, 'pets.json')
+var petsPath = path.join(__dirname, 'pets.json');
 var port = process.env.PORT || 8000;
 
 var data = fs.readFileSync(petsPath,'utf-8');
@@ -31,21 +31,22 @@ var server = http.createServer(function(req, res){
     }
   } else if (req.method === 'POST' && petRegExp.test(req.url)){
     var body = '';
-    req.on('data', function() {
+    req.on('data', function(data) {
         body += data;
     });
     req.on('end', function() {
-        body = JSON.parse(body);
-        if (!body.age || !body.name || !body.kind){
-          error(res,'Bad Request', 400);
-        } else {
-          var pets = JSON.parse(data);
-          pets.push(body);
-          var petsJSON = JSON.stringify(pets);
-          fs.writeFile(petsPath,petsJSON,function(){console.log('written!')});
-          res.statusCode = 200;
+        body = JSON.parse(body); //JSON, arguments
+        if (body.age && body.name && body.kind){
+          var pets = JSON.parse(data); //JSON data file
+          console.log(pets, 'pets b4');
+          pets.push(body); // push JSON to body
+          console.log(pets, 'pets after');
+          var petsJSON = JSON.stringify(pets); // string JSON data file w/new item
+          fs.writeFile(petsPath,petsJSON,function(err){if(err){console.log(err)}});
           res.setHeader('Content-Type', 'application/json');
           res.end(JSON.stringify(body));
+        } else {
+          error(res,'Bad Request', 400);
         }
     });
   } else {
