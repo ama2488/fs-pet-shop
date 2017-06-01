@@ -24,9 +24,8 @@ app.route('/pets')
   req.on('end', () => {
     body = JSON.parse(body);
     if (body.age && body.name && body.kind){
-      let pets = petData;
-      pets.push(body);
-      let petsJSON = JSON.stringify(pets);
+      petData.push(body);
+      let petsJSON = JSON.stringify(petData);
       fs.writeFileSync(petsPath,petsJSON);
       res.set('Content-type', 'application/json');
       res.send(JSON.stringify(body));
