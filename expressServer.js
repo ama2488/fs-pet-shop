@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const parser = require('body-parser');
+const morgan = require('morgan');
 
 const petsPath = path.join(__dirname, 'pets.json');
 const port = process.env.PORT || 8000;
@@ -13,13 +14,14 @@ const petData = JSON.parse(data);
 const app = express();
 app.disable('x-powered-by');
 app.use(parser.json());
+app.use(morgan('short'));
 
 app.route('/pets')
 .get((req, res) => {
   res.send(petData);
 })
 .post((req, res) => {
-  if (req.body.age && req.body.name && req.body.kind) {
+  if (req.body.age && req.body.name && req.body.kind && !isNaN(req.body.age)) {
     petData.push(req.body);
     const petsJSON = JSON.stringify(petData);
     fs.writeFileSync(petsPath, petsJSON);
