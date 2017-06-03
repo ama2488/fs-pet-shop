@@ -6,8 +6,8 @@ const path = require('path');
 
 const petsPath = path.join(__dirname, 'pets.json');
 const port = process.env.PORT || 8000;
-const data = fs.readFileSync(petsPath, 'utf-8');
-const myData = JSON.parse(data);
+let data = fs.readFileSync(petsPath, 'utf-8');
+let myData = JSON.parse(data);
 const petRegExp = /^\/pets(.*)$/;
 function error(res, err, code) {
   res.statusCode = code;
@@ -18,6 +18,8 @@ function error(res, err, code) {
 const server = http.createServer((req, res) => {
   const reqArr = req.url.split('/');
   const index = parseInt(reqArr[reqArr.length - 1], 10);
+  data = fs.readFileSync(petsPath, 'utf-8');
+  myData = JSON.parse(data);
   if (req.method === 'GET' && petRegExp.test(req.url)) {
     if (index >= 0 && index < myData.length) {
       res.setHeader('Content-Type', 'application/json');

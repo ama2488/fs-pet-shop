@@ -6,10 +6,10 @@ const express = require('express');
 const parser = require('body-parser');
 const morgan = require('morgan');
 
-const petsPath = path.join(__dirname, 'pets.json');
+const petsPath = 'pets.json';
 const port = process.env.PORT || 8000;
-const data = fs.readFileSync(petsPath, 'utf-8');
-const petData = JSON.parse(data);
+let data = fs.readFileSync(petsPath, 'utf-8');
+let petData = JSON.parse(data);
 
 const app = express();
 app.disable('x-powered-by');
@@ -18,6 +18,8 @@ app.use(morgan('short'));
 
 app.route('/pets')
 .get((req, res) => {
+  data = fs.readFileSync(petsPath, 'utf-8');
+  petData = JSON.parse(data);
   res.send(petData);
 })
 .post((req, res) => {
